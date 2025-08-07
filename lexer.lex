@@ -79,10 +79,7 @@ import java.io.IOException;
 
 
 
-%{
-    // Scanner para la calculadora simple (RDP Lab 3)
-    // Manejo de tokens: +, -, *, /, %, ^, (, ), number y ;
-%}
+
 
 %public
 %class Lexer
