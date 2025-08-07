@@ -77,19 +77,71 @@ import java.io.IOException;
     */
 %}
 
+
+
+%{
+    // Scanner para la calculadora simple (RDP Lab 3)
+    // Manejo de tokens: +, -, *, /, %, ^, (, ), number y ;
+%}
+
 %public
 %class Lexer
 %function nextToken
 %type Token
 
-SEMI = ";" // Definan aqui sus Tokens/ER por ejemplo: "el token SEMI"
-WHITE = (" "|\t|\n)
+DIGITS = [0-9]+
+EXP    = ([eE][+-]?{DIGITS})
+NUMBER = {DIGITS}(\.{DIGITS})?({EXP})?
+
 
 %%
 
-<YYINITIAL>{SEMI}   { return new Token(Token.SEMI);   }
 
-<YYINITIAL>{WHITE}  { /* NO HACER NADA */             }
 
-<YYINITIAL>.        { return new Token(Token.ERROR);
-                      /* todo lo demas es ERROR */ }
+<YYINITIAL>{NUMBER}    { 
+    return new Token(Token.NUMBER, yytext()); 
+}
+[ \t\r]+                { 
+    
+}
+
+
+<YYINITIAL>";"                     { 
+    return new Token(Token.SEMI); 
+}
+
+
+<YYINITIAL>"+"                     { 
+    return new Token(Token.PLUS); 
+    }
+<YYINITIAL>"-"                     { 
+    return new Token(Token.MINUS); 
+}
+<YYINITIAL>"*"                     { 
+    return new Token(Token.MULT); 
+}
+<YYINITIAL>"/"                     { 
+    return new Token(Token.DIV); 
+}
+<YYINITIAL>"%"                     { 
+    return new Token(Token.MOD); 
+}
+<YYINITIAL>"^"                     { 
+    return new Token(Token.EXP); 
+}
+
+
+<YYINITIAL>"("                     { 
+    return new Token(Token.LPAREN); 
+}
+<YYINITIAL>")"                     { 
+    return new Token(Token.RPAREN); 
+}
+<YYINITIAL>"~"                          { 
+    return new Token(Token.UNARY); 
+}
+
+
+<YYINITIAL>.             { 
+    return new Token(Token.ERROR); 
+}
